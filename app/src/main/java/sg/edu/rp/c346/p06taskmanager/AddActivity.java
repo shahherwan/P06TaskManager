@@ -35,13 +35,16 @@ public class AddActivity extends AppCompatActivity {
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = etName.getText().toString();
+                String description = etDescription.getText().toString();
 
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.SECOND, 5);
 
                 Intent intent = new Intent(AddActivity.this,
                         ScheduledNotificationReceiver.class);
-
+                intent.putExtra("name", name);
+                intent.putExtra("description", description);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         AddActivity.this, reqCode,
                         intent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -51,8 +54,6 @@ public class AddActivity extends AppCompatActivity {
                 am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
                         pendingIntent);
 
-                String name = etName.getText().toString();
-                String description = etDescription.getText().toString();
 
                 DBHelper dbh = new DBHelper(AddActivity.this);
                 long row_affected = dbh.insertTask(name, description);
@@ -63,6 +64,9 @@ public class AddActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
 
+                Intent i = new Intent(AddActivity.this, MainActivity.class);
+                // Start the new activity
+                startActivity(i);
 
             }
         });

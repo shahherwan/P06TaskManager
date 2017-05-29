@@ -13,14 +13,17 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        String name = intent.getStringExtra("name");
+        String description = intent.getStringExtra("description");
+
         Intent i = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, reqCode,
                 i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // build notification
         Notification.Builder builder = new Notification.Builder(context);
-        builder.setContentTitle("Amazing Offer!");
-        builder.setContentText("Subject");
+        builder.setContentTitle(name);
+        builder.setContentText(description);
         builder.setSmallIcon(android.R.drawable.ic_dialog_info);
         builder.setContentIntent(pIntent);
         builder.setAutoCancel(true);
